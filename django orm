@@ -1,1 +1,1 @@
-book = Book.objects.select_related('publisher').get(id=1)
+k=Enrollment.objects.filter(course__courseid=1).values('id','course__courseid','course__name','enrollid')
