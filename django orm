@@ -1,1 +1,2 @@
-k=Enrollment.objects.filter(course__courseid=1).values('id','course__courseid','course__name','enrollid')
+Player.objects.filter(name="Bob").prefetch_related(
+        'position__positionstats_set', 'playerstats_set')
