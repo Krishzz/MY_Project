@@ -1,0 +1,25 @@
+select userkey,
+sum(login_time)/60 as login_hours from
+(
+select a.userkey,
+a.event_type,a.flag,a.timestamp_dt,b.timestamp_dt,
+(case when a.flag=1 then ((DATE_PART(minutes,sysdate)+(DATE_PART(hours,b.timestamp_dt)*60))- (DATE_PART(minutes,a.timestamp_dt)+(DATE_PART(hours,a.timestamp_dt)*60))) else 0  end ) login_time,
+(case when a.flag=0 then ((DATE_PART(minutes,sysdate)+(DATE_PART(hours,b.timestamp_dt)*60))- (DATE_PART(minutes,a.timestamp_dt)+(DATE_PART(hours,a.timestamp_dt)*60))) else 0  end ) logout_time
+from
+((select userkey,event_type,flag,timestamp_dt,
+row_number()over(order by userkey) as row
+from c360_analytics.lv_km_log
+where userkey='1'
+group by  userkey,event_type,flag,timestamp_dt)a
+join
+(select userkey,event_type,flag,timestamp_dt,
+lag(row,1) over(order by row) as prev_row from
+(select userkey,event_type,flag,timestamp_dt,
+row_number()over(order by userkey) as row
+from c360_analytics.lv_km_log
+where userkey='1'
+group by  userkey,event_type,flag,timestamp_dt)a
+order by row)b on a.row=b.prev_row and
+b.prev_row is not null)
+order by a.row)
+group by userkey
