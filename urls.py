@@ -1,13 +1,25 @@
-from django.contrib import admin
-from django.urls import path
+"""django_site URL Configuration
 
-from . import views
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
-	path('hr_dashboard/', views.hr_dashboard, name="hr_dashboard"),
-	path('logout_hr/', views.logout_hr, name="logout_hr"),
-	path('add_holidays/', views.add_holidays, name = 'add_holidays'),
-	path('edit_application/', views.edit_application, name = 'edit_application'),
-	path('add_filters/<str:filter>/', views.add_filters, name = 'add_filters'),
-	path('new_holidays/', views.new_holidays, name="new_holidays"),
-	path('new_filters/', views.new_filters, name="new_filters"),
-]
+    path('', include('Emp_leave_form.urls')),
+    path('', include('Leave_approval_portal.urls')),
+    path('', include('LM_HR_Portal.urls')),
+    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
