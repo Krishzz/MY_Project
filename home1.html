@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset='utf-8'/>
+
+    <title>Episode Allocation</title>
+
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.overwrite.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/spk-main.1.2.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui-timepicker-addon.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/fineuploader.css' %}">
+    <style>
+		.spk-cStat-1,.spk-stat-1 {
+			color:#000000;
+			background:#FFFFFF;
+			content:"New Task";
+		}
+		.spk-cStat-1:before {
+			content:"New Task";
+		}
+		.spk-cStat-2,.spk-stat-2 {
+			color:#FFFF00;
+			background:#FFAA00;
+			content:"SPK Retake";
+		}
+		.spk-cStat-2:before {
+			content:"SPK Retake";
+		}
+		.spk-cStat-3,.spk-stat-3 {
+			color:#FFFF00;
+			background:#FF0000;
+			content:"DIR Retake";
+		}
+		.spk-cStat-3:before {
+			content:"DIR Retake";
+		}
+		.spk-cStat-4,.spk-stat-4 {
+			color:#000000;
+			background:#00AA00;
+			content:"SPK Approve";
+		}
+		.spk-cStat-4:before {
+			content:"SPK Approve";
+		}
+		.spk-cStat-5,.spk-stat-5 {
+			color:#000000;
+			background:#00FF00;
+			content:"DIR Approve";
+		}
+		.spk-cStat-5:before {
+			content:"DIR Approve";
+		}
+		.spk-cStat-6,.spk-stat-6 {
+			color:#000000;
+			background:#FFFF00;
+			content:"Submission";
+		}
+		.spk-cStat-6:before {
+			content:"Submission";
+		}
+		.spk-cStat-7,.spk-stat-7 {
+			color:#000000;
+			background:#AAAAFF;
+			content:"Note";
+		}
+		.spk-cStat-7:before {
+			content:"Note";
+		}
+		.spk-cStat-8,.spk-stat-8 {
+			color:#0000FF;
+			background:#EEEEEE;
+			content:"Lead Note";
+		}
+		.spk-cStat-8:before {
+			content:"Lead Note";
+		}
+		.spk-cStat-9,.spk-stat-9 {
+			color:#FFFFFF;
+			background:#AAAAAA;
+			content:"Obsolete";
+		}
+		.spk-cStat-9:before {
+			content:"Obsolete";
+		}
+		.spk-cStat-10,.spk-stat-10 {
+			color:#FF0000;
+			background:#FFDB00;
+			content:"Extend Due Date";
+		}
+		.spk-cStat-10:before {
+			content:"Extend Due Date";
+		}
+		.spk-cStat-11,.spk-stat-11 {
+			color:#000000;
+			background:#FF8FE1;
+			content:"DIR Submmision";
+		}
+		.spk-cStat-11:before {
+			content:"DIR Submmision";
+		}
+		.spk-cStat-12,.spk-stat-12 {
+			color:#EEEEEE;
+			background:#0000FF;
+			content:"Protected Note";
+		}
+		.spk-cStat-12:before {
+			content:"Protected Note";
+		}
+		.spk-cStat-13,.spk-stat-13 {
+			color:#FF0000;
+			background:#FFAAAA;
+			content:"Msc Retake";
+		}
+		.spk-cStat-13:before {
+			content:"Msc Retake";
+		}
+		.spk-cStat-14,.spk-stat-14 {
+			color:#000000;
+			background:#FFFFAA;
+			content:"ITR Submission";
+		}
+		.spk-cStat-14:before {
+			content:"ITR Submission";
+		}
+		.spk-cStat-15,.spk-stat-15 {
+			color:#FFFF00;
+			background:#007700;
+			content:"ITR Approve";
+		}
+		.spk-cStat-15:before {
+			content:"ITR Approve";
+		}
+		.spk-cStat-16,.spk-stat-16 {
+			color:#FFFF00;
+			background:#000000;
+			content:"Serious Mistake";
+		}
+		.spk-cStat-16:before {
+			content:"Serious Mistake";
+		}
+		.spk-cStat-17,.spk-stat-17 {
+			color:#000000;
+			background:#00FF44;
+			content:"TEC Approve";
+		}
+		.spk-cStat-17:before {
+			content:"TEC Approve";
+		}
+		.spk-cStat-18,.spk-stat-18 {
+			color:#000000;
+			background:#00FF22;
+			content:"VIS Approve";
+		}
+		.spk-cStat-18:before {
+			content:"VIS Approve";
+		}
+		.spk-cStat-19,.spk-stat-19 {
+			color:#FFFFFF;
+			background:#804C19;
+			content:"Hold";
+		}
+		.spk-cStat-19:before {
+			content:"Hold";
+		}
+		.spk-cStat-20,.spk-stat-20 {
+			color:#000000;
+			background:#C9C9FF;
+			content:"WIP";
+		}
+		.spk-cStat-20:before {
+			content:"WIP";
+		}
+		.spk-cStat-21,.spk-stat-21 {
+			color:#FFFF00;
+			background:#BB1122;
+			content:"Anim Error";
+		}
+		.spk-cStat-21:before {
+			content:"Anim Error";
+		}
+		.spk-cStat-22,.spk-stat-22 {
+			color:#274E13;
+			background:#FFF2CC;
+			content:"Ready";
+		}
+		.spk-cStat-22:before {
+			content:"Ready";
+		}
+		.spk-cStat-23,.spk-stat-23 {
+			color:#7AFFEF;
+			background:#DA5626;
+			content:"Server Job Done";
+		}
+		.spk-cStat-23:before {
+			content:"Server Job Done";
+		}
+		.spk-cStat-24,.spk-stat-24 {
+			color:#3FA500;
+			background:#FF3D3D;
+			content:"Server Job ERR";
+		}
+		.spk-cStat-24:before {
+			content:"Server Job ERR";
+		}
+
+
+
+
+
+
+
+    </style>
+    
+
+    <!-- Piwik TRACKER DISABLED-->
+    <style type="text/css">
+		.bs-example {
+			margin: auto;
+			width: 50%;
+		}
+
+		.dropdown:hover .dropdown-menu {
+			display: block;
+			xblock-size: 10px;
+		}
+
+
+
+
+
+
+
+    </style>
+    <script type='text/javascript'>
+<!--        console.log("Top of the code")-->
+        setSPKCookie('SPK_CurUserKey', 994)
+<!--        console.log(getSPKCookie('SPK_CurUserKey'))-->
+
+
+
+    </script>
+</head>
+
+<body class='spk-home' id='MAIN_BODY' onunload='releaseSPKCookie()'>
+
+<div class='ui-layout-south' style="padding: 0px 0px 10px;">
+    <div id='StatusSec' class='spk-status'>
+
+        <div id='MessageSec' style='width:100%;height:100%'>
+            <div id='MessageSecClear'>X</div>
+            <table id='MessageSecBody' style='table-layout: fixed'></table>
+        </div>
+        <div id='ProgressSec' style='display:none;position:absolute;top:0px;left:400px;'>
+            <img src='img/load.gif' style='margin:5px;'>Loading...</img>
+        </div>
+    </div>
+</div>
+
+<div class='ui-layout-center'>
+    <div id='MainSec'></div>
+</div>
+
+<div id="ProgressSouth" class="spk-activity"></div>
+<div class='ui-layout-north' style='overflow:visible'>
+
+    <div class='spk-top ui-widget'>
+        <div style="position:relative; height:10px">
+
+        </div>
+        <a href="/"><img src='{% static "images/SPKLogo_SM_spknet.jpg" %}' alt="My image"
+                         style='float:left;top: -5px;position: relative; margin-top:-15px;'/></a>
+        <!--        <img src='\public\images\SPKLogo_cornerR_spknet.jpg' style='position:absolute;top:5px;right:0px;'/>-->
+        <div style='float:left;margin:5px;font-size:0.7em'>
+            SPK Net V5.30
+        </div>
+
+        <div style='float:left;margin-left:20px'>
+            <h2 id='PageTitle' class='spk-page-title ui-corner-all' style="margin-left:650px"></h2>
+        </div>
+
+        <div style='position:absolute;top:10px;right:0.2em;'>
+
+            <div style='float:right'>
+
+
+                <div style='float:left'>
+
+                </div>
+
+                Project Admin [CHENNAI - 30.0.0.59] : <a
+                    href="index.php?query=User&uKey=994">{{request.session.user}}</a>
+                <button id='signoutBtn' class='signBtn'>Sign Out</button>
+                </strong>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class='ui-layout-center'>
+    <div id='MainSec'>
+        <div class="ui-layout-center ui-layout-pane ui-layout-pane-center"
+             style="position: absolute; margin: 0px; left: 0px; right: 0px; top: 50px; bottom: 56px;  width: 1920px; z-index: 0; padding: 0px; background: rgb(206, 234, 130); border: 0px solid rgb(158, 130, 89); overflow: hidden; display: block; visibility: visible;">
+            <div id="MainSec">
+
+
+                <title>Assignment</title>
+
+                <!-- Piwik TRACKER DISABLED-->
+
+
+                <div id="AA_COOKIESEC"></div>
+
+                <div id="AA_MAIN" class="ui-widget spk-frame ui-layout-container" style="overflow: hidden;">
+                    <div id="AA_SUB" class="ui-layout-center ui-layout-pane ui-layout-pane-center"
+                         style="position: absolute; margin: 0px; left: 206px; right: 0px; top: 0px; bottom: 0px;  width: 1714px; z-index: 0; padding: 0px; background: rgb(206, 234, 130); border: 0px solid rgb(158, 130, 89); overflow: hidden; display: block; visibility: visible;">
+                        <div style="vertical-align:text-bottom">
+                            <div id="AA_buttonSec" style="float:left;" class="ui-buttonset">
+
+                                <div class="spk_menuSet" data-label="AA_Selected"
+                                     style="position:relative;float:left;z-index:99">
+                                    <button id="AA_SelectedBtn"
+                                            class="ui-button ui-widget ui-state-default ui-button-text-icons"
+                                            role="button" style="display: None;"><span
+                                            class="ui-button-icon-primary ui-icon ui-icon-tag"></span><span
+                                            class="ui-button-text">Selected</span><span
+                                            class="ui-button-icon-secondary ui-icon ui-icon-triangle-1-s"></span>
+                                    </button>
+                                </div>
+                                <!--				<div style='position:relative;float:left;'>-->
+                                <!--					<button id='AA_uploadNoteBtn'>Upload Notes</button>-->
+                                <!--				</div>-->
+
+
+                                <!-- Rajesh Fithelis -->
+
+
+                                <!-- && $_COOKIE['SPK_UP_CurUserKey']==905 -->
+
+
+                            </div>
+
+
+                            <div id="AA_pageSec"
+                                 style="float: right; font-size: 0.8em; margin-right: 0.2em; display: block;">
+                                <button class="spk-pageBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                        onclick="ass_changePage(1)" role="button"><span class="ui-button-text"><strong>First</strong></span>
+                                </button>
+                                <button class="spk-pageBtn spk-selected ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                        onclick="ass_changePage(1)" role="button"
+                                        style="background: rgb(191, 219, 115); font-weight: bold;"><span
+                                        class="ui-button-text">1</span></button>
+
+                            </div>
+                        </div>
+
+                        <div id="AA_TAB" style="position:absolue;top:4em;bottom:0px;left:0px;right:0px"
+                             class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+                            <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"
+                                role="tablist">
+                                <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab"
+                                    tabindex="0" aria-controls="tabs-1" aria-labelledby="ui-id-170" aria-selected="true"
+                                    aria-expanded="true"><a href="#tabs-1" class="ui-tabs-anchor" role="presentation"
+                                                            tabindex="-1" id="ui-id-170">Assignment List</a></li>
+                                <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1"
+                                    aria-controls="tabs-2" aria-labelledby="ui-id-171" aria-selected="false"
+                                    aria-expanded="false"><a href="#tabs-2" class="ui-tabs-anchor" role="presentation"
+                                                             tabindex="-1" id="ui-id-171">Grand Chart</a></li>
+<!--                                <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1"-->
+<!--                                    aria-controls="tabs-3" aria-labelledby="ui-id-172" aria-selected="false"-->
+<!--                                    aria-expanded="false"><a href="#tabs-3" class="ui-tabs-anchor" role="presentation"-->
+<!--                                                             tabindex="-1" id="ui-id-172">Thumbnail</a></li>-->
+                                <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1"
+                                    aria-controls="tabs-4" aria-labelledby="ui-id-173" aria-selected="false"
+                                    aria-expanded="false"><a href="#tabs-4" class="ui-tabs-anchor" role="presentation"
+                                                             tabindex="-1" id="ui-id-173">Statistics</a></li>
+<!--                                <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1"-->
+<!--                                    aria-controls="tabs-5" aria-labelledby="ui-id-174" aria-selected="false"-->
+<!--                                    aria-expanded="false"><a href="#tabs-5" class="ui-tabs-anchor" role="presentation"-->
+<!--                                                             tabindex="-1" id="ui-id-174">Progress</a></li>-->
+<!--                                <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1"-->
+<!--                                    aria-controls="tabs-6" aria-labelledby="ui-id-175" aria-selected="false"-->
+<!--                                    aria-expanded="false"><a href="#tabs-6" class="ui-tabs-anchor" role="presentation"-->
+<!--                                                             tabindex="-1" id="ui-id-175">Task Load</a></li>-->
+                            </ul>
+                            <div id="tabs-1" aria-labelledby="ui-id-22"
+                                 class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+                                 aria-hidden="false">
+                                <div id="AssignSec">
+                                    <div id="AA_ListSec"
+                                         style="position:absolute;top:0px;bottom:0px;left:.2em;right:.2em;overflow-y:auto;">
+                                        <table id="AA_ListHeaderTable" class="spk-table2">
+                                            <thead id="AA_THead">
+                                            <tr>
+                                            	<th colspan="6" class="spk-cell"></th>
+                                            	<th colspan="5" class="spk-cell" style="font-size: 20px;">Team Lead</th>
+                                            	<th colspan="5" class="spk-cell" style="font-size: 20px;">Supervisor</th>
+                                            	<th colspan="5" class="spk-cell" style="font-size: 20px;">Production Manager</th>
+                                            </tr>
+                                            <tr id="R_MAIN">
+                                                <th class="spk-cell"
+                                                    style="border-right-color:rgb(206, 234, 130);width:18px;min-width:60px; max-width:62px;"></th>
+                                                <th class="spk-tCell"
+                                                    style="border-right-color:rgb(206, 234, 130)"></th>
+                                                <th class="spk-tCell"
+                                                    style="border-right-color:rgb(206, 234, 130)"></th>
+                                                <th class="spk-tCell"></th>
+                                                <th class="spk-tCell" style="min-width:100px;"><input id="AA_taskFld"
+                                                                                                      class="spk-column-input spk-cellField ui-autocomplete-input"
+                                                                                                      value="ALL"
+                                                                                                      autocomplete="off">
+                                                </th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"><input
+                                                        id="AA_dueDateFld"
+                                                        onchange="ass_dueDateChange(&quot;AA_dueDateFld&quot;)"
+                                                        class="spk-column-input spk-cellField hasDatepicker"></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"><select
+                                                        id="AA_assignToList" class="spk-column-input spk-cellField">
+                                                    <option value="-" title="-">-</option>
+                                                    <option value="866" title="Sherry Tang">Sherry Tang</option>
+                                                    <option value="19" title="SweeKin">SweeKin</option>
+                                                </select></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"><select
+                                                        id="AA_statusList"
+                                                        onchange="ass_statusChange(&quot;AA_statusList&quot;)"
+                                                        class="spk-column-input spk-cellField">
+                                                    <option value="-" title="-">-</option>
+                                                    <option value="1" title="New Task" class="spk-stat spk-stat-1">New
+                                                        Task
+                                                    </option>
+                                                    <option value="2" title="SPK Retake" class="spk-stat spk-stat-2">SPK
+                                                        Retake
+                                                    </option>
+                                                    <option value="3" title="DIR Retake" class="spk-stat spk-stat-3">DIR
+                                                        Retake
+                                                    </option>
+                                                    <option value="13" title="Msc Retake" class="spk-stat spk-stat-13">
+                                                        Msc Retake
+                                                    </option>
+                                                    <option value="6" title="Submission" class="spk-stat spk-stat-6">
+                                                        Submission
+                                                    </option>
+                                                    <option value="14" title="ITR Submission"
+                                                            class="spk-stat spk-stat-14">ITR Submission
+                                                    </option>
+                                                    <option value="7" title="Note" class="spk-stat spk-stat-7">Note
+                                                    </option>
+                                                    <option value="8" title="Lead Note" class="spk-stat spk-stat-8">Lead
+                                                        Note
+                                                    </option>
+                                                    <option value="12" title="Protected Note"
+                                                            class="spk-stat spk-stat-12">Protected Note
+                                                    </option>
+                                                    <option value="23" title="Server Job Done"
+                                                            class="spk-stat spk-stat-23">Server Job Done
+                                                    </option>
+                                                    <option value="4" title="SPK Approve" class="spk-stat spk-stat-4">
+                                                        SPK Approve
+                                                    </option>
+                                                    <option value="15" title="ITR Approve" class="spk-stat spk-stat-15">
+                                                        ITR Approve
+                                                    </option>
+                                                    <option value="5" title="DIR Approve" class="spk-stat spk-stat-5">
+                                                        DIR Approve
+                                                    </option>
+                                                    <option value="11" title="DIR Submmision"
+                                                            class="spk-stat spk-stat-11">DIR Submmision
+                                                    </option>
+                                                    <option value="9" title="Obsolete" class="spk-stat spk-stat-9">
+                                                        Obsolete
+                                                    </option>
+                                                    <option value="17" title="TEC Approve" class="spk-stat spk-stat-17">
+                                                        TEC Approve
+                                                    </option>
+                                                    <option value="18" title="VIS Approve" class="spk-stat spk-stat-18">
+                                                        VIS Approve
+                                                    </option>
+                                                    <option value="10" title="Extend Due Date"
+                                                            class="spk-stat spk-stat-10">Extend Due Date
+                                                    </option>
+                                                    <option value="16" title="Serious Mistake"
+                                                            class="spk-stat spk-stat-16">Serious Mistake
+                                                    </option>
+                                                    <option value="19" title="Hold" class="spk-stat spk-stat-19">Hold
+                                                    </option>
+                                                    <option value="20" title="WIP" class="spk-stat spk-stat-20">WIP
+                                                    </option>
+                                                    <option value="21" title="Anim Error" class="spk-stat spk-stat-21">
+                                                        Anim Error
+                                                    </option>
+                                                    <option value="24" title="Server Job ERR"
+                                                            class="spk-stat spk-stat-24">Server Job ERR
+                                                    </option>
+                                                </select></th>
+                                                <th class="spk-tCell" style="min-width:200px;width:400px;"><textarea
+                                                        id="AA_remarkFld" class="spk-column-input spk-cellField"
+                                                        style="text-align:left;" rows="1"></textarea></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"><select
+                                                        id="AA_assignToList" class="spk-column-input spk-cellField">
+                                                    <option value="-" title="-">-</option>
+                                                    <option value="866" title="Sherry Tang">Sherry Tang</option>
+                                                    <option value="19" title="SweeKin">SweeKin</option>
+                                                </select></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"><select
+                                                        id="AA_statusList"
+                                                        onchange="ass_statusChange(&quot;AA_statusList&quot;)"
+                                                        class="spk-column-input spk-cellField">
+                                                    <option value="-" title="-">-</option>
+                                                    <option value="1" title="New Task" class="spk-stat spk-stat-1">New
+                                                        Task
+                                                    </option>
+                                                    <option value="2" title="SPK Retake" class="spk-stat spk-stat-2">SPK
+                                                        Retake
+                                                    </option>
+                                                    <option value="3" title="DIR Retake" class="spk-stat spk-stat-3">DIR
+                                                        Retake
+                                                    </option>
+                                                    <option value="13" title="Msc Retake" class="spk-stat spk-stat-13">
+                                                        Msc Retake
+                                                    </option>
+                                                    <option value="6" title="Submission" class="spk-stat spk-stat-6">
+                                                        Submission
+                                                    </option>
+                                                    <option value="14" title="ITR Submission"
+                                                            class="spk-stat spk-stat-14">ITR Submission
+                                                    </option>
+                                                    <option value="7" title="Note" class="spk-stat spk-stat-7">Note
+                                                    </option>
+                                                    <option value="8" title="Lead Note" class="spk-stat spk-stat-8">Lead
+                                                        Note
+                                                    </option>
+                                                    <option value="12" title="Protected Note"
+                                                            class="spk-stat spk-stat-12">Protected Note
+                                                    </option>
+                                                    <option value="23" title="Server Job Done"
+                                                            class="spk-stat spk-stat-23">Server Job Done
+                                                    </option>
+                                                    <option value="4" title="SPK Approve" class="spk-stat spk-stat-4">
+                                                        SPK Approve
+                                                    </option>
+                                                    <option value="15" title="ITR Approve" class="spk-stat spk-stat-15">
+                                                        ITR Approve
+                                                    </option>
+                                                    <option value="5" title="DIR Approve" class="spk-stat spk-stat-5">
+                                                        DIR Approve
+                                                    </option>
+                                                    <option value="11" title="DIR Submmision"
+                                                            class="spk-stat spk-stat-11">DIR Submmision
+                                                    </option>
+                                                    <option value="9" title="Obsolete" class="spk-stat spk-stat-9">
+                                                        Obsolete
+                                                    </option>
+                                                    <option value="17" title="TEC Approve" class="spk-stat spk-stat-17">
+                                                        TEC Approve
+                                                    </option>
+                                                    <option value="18" title="VIS Approve" class="spk-stat spk-stat-18">
+                                                        VIS Approve
+                                                    </option>
+                                                    <option value="10" title="Extend Due Date"
+                                                            class="spk-stat spk-stat-10">Extend Due Date
+                                                    </option>
+                                                    <option value="16" title="Serious Mistake"
+                                                            class="spk-stat spk-stat-16">Serious Mistake
+                                                    </option>
+                                                    <option value="19" title="Hold" class="spk-stat spk-stat-19">Hold
+                                                    </option>
+                                                    <option value="20" title="WIP" class="spk-stat spk-stat-20">WIP
+                                                    </option>
+                                                    <option value="21" title="Anim Error" class="spk-stat spk-stat-21">
+                                                        Anim Error
+                                                    </option>
+                                                    <option value="24" title="Server Job ERR"
+                                                            class="spk-stat spk-stat-24">Server Job ERR
+                                                    </option>
+                                                </select></th>
+                                                <th class="spk-tCell" style="min-width:200px;width:400px;"><textarea
+                                                        id="AA_remarkFld" class="spk-column-input spk-cellField"
+                                                        style="text-align:left;" rows="1"></textarea></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"><select
+                                                        id="AA_assignToList" class="spk-column-input spk-cellField">
+                                                    <option value="-" title="-">-</option>
+                                                    <option value="866" title="Sherry Tang">Sherry Tang</option>
+                                                    <option value="19" title="SweeKin">SweeKin</option>
+                                                </select></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"></th>
+                                                <th class="spk-tCell" style="min-width:100px;max-width:100px;"><select
+                                                        id="AA_statusList"
+                                                        onchange="ass_statusChange(&quot;AA_statusList&quot;)"
+                                                        class="spk-column-input spk-cellField">
+                                                    <option value="-" title="-">-</option>
+                                                    <option value="1" title="New Task" class="spk-stat spk-stat-1">New
+                                                        Task
+                                                    </option>
+                                                    <option value="2" title="SPK Retake" class="spk-stat spk-stat-2">SPK
+                                                        Retake
+                                                    </option>
+                                                    <option value="3" title="DIR Retake" class="spk-stat spk-stat-3">DIR
+                                                        Retake
+                                                    </option>
+                                                    <option value="13" title="Msc Retake" class="spk-stat spk-stat-13">
+                                                        Msc Retake
+                                                    </option>
+                                                    <option value="6" title="Submission" class="spk-stat spk-stat-6">
+                                                        Submission
+                                                    </option>
+                                                    <option value="14" title="ITR Submission"
+                                                            class="spk-stat spk-stat-14">ITR Submission
+                                                    </option>
+                                                    <option value="7" title="Note" class="spk-stat spk-stat-7">Note
+                                                    </option>
+                                                    <option value="8" title="Lead Note" class="spk-stat spk-stat-8">Lead
+                                                        Note
+                                                    </option>
+                                                    <option value="12" title="Protected Note"
+                                                            class="spk-stat spk-stat-12">Protected Note
+                                                    </option>
+                                                    <option value="23" title="Server Job Done"
+                                                            class="spk-stat spk-stat-23">Server Job Done
+                                                    </option>
+                                                    <option value="4" title="SPK Approve" class="spk-stat spk-stat-4">
+                                                        SPK Approve
+                                                    </option>
+                                                    <option value="15" title="ITR Approve" class="spk-stat spk-stat-15">
+                                                        ITR Approve
+                                                    </option>
+                                                    <option value="5" title="DIR Approve" class="spk-stat spk-stat-5">
+                                                        DIR Approve
+                                                    </option>
+                                                    <option value="11" title="DIR Submmision"
+                                                            class="spk-stat spk-stat-11">DIR Submmision
+                                                    </option>
+                                                    <option value="9" title="Obsolete" class="spk-stat spk-stat-9">
+                                                        Obsolete
+                                                    </option>
+                                                    <option value="17" title="TEC Approve" class="spk-stat spk-stat-17">
+                                                        TEC Approve
+                                                    </option>
+                                                    <option value="18" title="VIS Approve" class="spk-stat spk-stat-18">
+                                                        VIS Approve
+                                                    </option>
+                                                    <option value="10" title="Extend Due Date"
+                                                            class="spk-stat spk-stat-10">Extend Due Date
+                                                    </option>
+                                                    <option value="16" title="Serious Mistake"
+                                                            class="spk-stat spk-stat-16">Serious Mistake
+                                                    </option>
+                                                    <option value="19" title="Hold" class="spk-stat spk-stat-19">Hold
+                                                    </option>
+                                                    <option value="20" title="WIP" class="spk-stat spk-stat-20">WIP
+                                                    </option>
+                                                    <option value="21" title="Anim Error" class="spk-stat spk-stat-21">
+                                                        Anim Error
+                                                    </option>
+                                                    <option value="24" title="Server Job ERR"
+                                                            class="spk-stat spk-stat-24">Server Job ERR
+                                                    </option>
+                                                </select></th>
+                                                <th class="spk-tCell" style="min-width:200px;width:400px;"><textarea
+                                                        id="AA_remarkFld" class="spk-column-input spk-cellField"
+                                                        style="text-align:left;" rows="1"></textarea></th>
+                                            </tr>
+                                            <tr id="R_MAIN2" class="ui-widget-header">
+                                                <th class="spk-tCell">
+                                                    <div class="spk-checkbox"><input id="AA_assCheckAllBtn"
+                                                                                     style="float:left" type="checkbox"
+                                                                                     onchange="checkAll(&quot;AA_assCheckAllBtn&quot;)"><label
+                                                            for="AA_assCheckAllBtn"></label></div>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_AT_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;AutoTrigger&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>P</b></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Set Retake Type_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;RetakeType&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><font-size=6px>Set Retake Type</font-size
+                                                        =6px></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Set Pass No_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;retakeround&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><font-size=6px>Set Pass No</font-size
+                                                        =6px></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Task_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;AssignmentName&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Task</b></span></button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(0)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Due Date_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;DueDate&quot;)" role="button"
+                                                            style="border-width: 0px;"><span class="ui-button-text"><b>Due Date</b></span>
+                                                    </button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(1)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Assign To_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;ToUserName&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Assign To</b></span></button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(2)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Update On_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;UpdateDate&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Update On</b></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Update By_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;UpUserName&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Update By</b></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Status_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;StatusType&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Status</b></span></button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(5)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Remarks_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;Remarks&quot;)" role="button"
+                                                            style="border-width: 0px;"><span class="ui-button-text"><b>Remarks</b></span>
+                                                    </button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(6)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Assign To_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;ToUserName&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Assign To</b></span></button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(2)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Update On_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;UpdateDate&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Update On</b></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Update By_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;UpUserName&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Update By</b></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Status_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;StatusType&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Status</b></span></button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(5)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Remarks_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;Remarks&quot;)" role="button"
+                                                            style="border-width: 0px;"><span class="ui-button-text"><b>Remarks</b></span>
+                                                    </button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(6)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Assign To_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;ToUserName&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Assign To</b></span></button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(2)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Update On_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;UpdateDate&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Update On</b></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Update By_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;UpUserName&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Update By</b></span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Status_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;StatusType&quot;)"
+                                                            role="button" style="border-width: 0px;"><span
+                                                            class="ui-button-text"><b>Status</b></span></button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(5)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                                <th class="spk-cell">
+                                                    <button id="ass_Remarks_Btn"
+                                                            class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_changeOrder(&quot;Remarks&quot;)" role="button"
+                                                            style="border-width: 0px;"><span class="ui-button-text"><b>Remarks</b></span>
+                                                    </button>
+                                                    <button class="assBtn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                                            onclick="ass_multiColumnEdit(6)" role="button"
+                                                            style="border-width: 0px;"><span
+                                                            class="ui-button-text">+</span></button>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="AA_TBody">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tabs-2" aria-labelledby="ui-id-23"
+                                 class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+                                 aria-hidden="false" style="display: block;">
+                                <div id="AssignGrandSec">
+                                    <div id="AA_GrandSEC"
+                                         style="position:absolute;top:0px;bottom:0px;left:.2em;right:.2em;overflow-y:auto;">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tabs-3" aria-labelledby="ui-id-172"
+                                 class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+                                 aria-hidden="true" style="display: none;">
+                                <div id="AA_THUMBSEC" class="spk-frame"
+                                     style="left:.2em;right:.2em;overflow-y:visible;overflow-x:hidden"></div>
+                            </div>
+
+                            <div id="tabs-4" aria-labelledby="ui-id-173"
+                                 class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+                                 aria-hidden="true" style="display: none;">
+                                <div id="AssignStatSec">
+                                    <div>
+						<span id="AA_ShotStatOption" style="display: inline;">
+							<strong style="padding-left:.5em">Group By</strong>
+							<select id="AA_statOptionList"><option value="1" title="Season">Season</option><option
+                                    value="2" title="Episode">Episode</option></select>
+						</span>
+
+                                        <span id="AA_AssetStatOption" style="display: none;"><input
+                                                id="AA_statAssetTagChkBox" type="checkbox"
+                                                style=""><strong>Asset Tag</strong></span>
+                                        <input id="AA_statUserChkBox" type="checkbox" style=""><strong>User</strong>
+                                    </div>
+
+                                    <div class="spk-divider"></div>
+
+                                    <div id="AA_STATSEC" class="spk-frame"
+                                         style="top:2em;left:.2em;right:.2em;overflow-y:visible;overflow-x:hidden"></div>
+                                </div>
+                            </div>
+
+                            <div id="tabs-5" aria-labelledby="ui-id-174"
+                                 class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+                                 aria-hidden="true" style="display: none;">
+                                <div id="AssignProgSec">
+                                    <div id="AA_PROGSEC" class="spk-frame"
+                                         style="top:2em;left:.2em;right:.2em;overflow-y:visible;overflow-x:hidden"></div>
+                                </div>
+                            </div>
+
+                            <div id="tabs-6" aria-labelledby="ui-id-175"
+                                 class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+                                 aria-hidden="true" style="display: none;">
+                                <div id="AssignTaskLoadSec">
+                                    <strong style="padding-left:.5em">Calendar</strong>
+                                    <select id="AA_CalenderOptionList">
+                                        <option value="Date">Day</option>
+                                        <option value="Week">Week</option>
+                                        <option value="Month">Month</option>
+                                    </select>
+
+                                    <strong style="padding-left:.5em">Data</strong>
+                                    <select id="AA_DataOptionList">
+                                        <option value="TaskCount">TaskCount</option>
+                                        <option id="AA_ShotValue" value="FrameCount">FrameCount</option>
+                                        <option id="AA_ShotValue" value="Seconds">Seconds</option>
+                                        <option value="Rating">Rating</option>
+                                    </select>
+
+                                    <strong style="padding-left:.5em">Mode</strong>
+                                    <select id="AA_ModeOptionList">
+                                        <option value="0">Detail Breakdown</option>
+                                        <option value="1">Total</option>
+                                    </select>
+
+                                    <div class="spk-divider"></div>
+
+                                    <div id="AA_TASKLOADSEC" class="spk-frame"
+                                         style="top:2em;left:.2em;right:.2em;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-layout-west ui-layout-pane ui-layout-pane-west"
+                         style="position: absolute; margin: 0px; left: 0px; right: auto; top: 0px; bottom: 0px; height: 331px; z-index: 0; padding: 0px; background: rgb(206, 234, 130); border: 0px solid rgb(158, 130, 89); overflow: hidden; width: 200px; display: block; visibility: visible;">
+                        <div id="FilterSec" class="spk-west-panel">
+                            <div id="AA_assignTypeSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist" style="display: NONE;">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-icons ui-accordion-header-active ui-state-active ui-corner-top"
+                                    role="tab" id="ui-id-46" aria-controls="ui-id-47" aria-selected="true"
+                                    aria-expanded="true"
+                                    tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">Assignment Type</a></h3>
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-47" aria-labelledby="ui-id-46" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <select id="AA_assignTypeList" class="spk-leftSec">
+                                        <option value="Shot">Asset</option>
+                                        <option value="Shot">Shot</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="AA_projSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                    role="tab" id="ui-id-124" aria-controls="ui-id-125" aria-selected="true"
+                                    aria-expanded="true" tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">Project (<span id="AA_projectCount">{{projectcount}}</span>)</a></h3>
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-125" aria-labelledby="ui-id-124" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <!--<select id='AA_projList' class='spk-leftSec' multiple='true' size=5>-->
+                                    <select id="AA_projList" class="spk-leftSec">
+                                        <option value="ALL">ALL (Excluding Lecacy Projects)</option>
+                                        {% for i in projects %}
+                                        <option value="{{i.ProjectKey}}">{{i.ProjectName}}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="AA_statusListSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                    role="tab" id="ui-id-126" aria-controls="ui-id-127" aria-selected="true"
+                                    aria-expanded="true" tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">Status List</a></h3>
+
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-127" aria-labelledby="ui-id-126" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <select id="AA_statusFilList" class="spk-leftSec" multiple="true" size="8">
+                                        <option value="ALL" class="spk-stat spk-stat-1">ALL</option>
+                                        {% for stat in status %}
+                                        <option value="{{stat.StatusKey}}" class="spk-stat spk-stat-{{stat.StatusKey}}">
+                                            {{stat.StatusType}}
+                                        </option>
+                                        {% endfor %}
+
+                                        <option value="NotAssigned" class="spk-stat spk-stat-1">Not Assigned</option>
+                                    </select>
+                                    <div class="spk-checkbox spk-checkbox-right">
+                                        <input id="AA_StatusListInvChkBox" type="checkbox" style="">
+                                        <label for="AA_StatusListInvChkBox"></label>
+                                    </div>
+                                    <strong>Invert</strong>
+                                    <!--					<input id='AA_StatusListInvChkBox' type="checkbox" style=''><strong>Invert</strong></input>-->
+                                </div>
+                            </div>
+
+                            <div id="AssetOption" style="display: none;">
+                                <div id="AA_assetCategorySec"
+                                     class="spk_accordion ui-accordion ui-widget ui-helper-reset" role="tablist">
+                                    <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                        role="tab" id="ui-id-128" aria-controls="ui-id-129" aria-selected="true"
+                                        aria-expanded="true" tabindex="0"><span
+                                            class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                            href="#">Category</a></h3>
+                                    <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                         id="ui-id-129" aria-labelledby="ui-id-128" role="tabpanel" aria-hidden="false"
+                                         style="display: block;">
+                                        <select id="AA_assetCategoryList" class="spk-leftSec">
+                                            <option value="ALL">ALL</option>
+                                            <option value="Character">Character</option>
+                                            <option value="FX">FX</option>
+                                            <option value="Library">Library</option>
+                                            <option value="Matte">Matte</option>
+                                            <option value="Misc">Misc</option>
+                                            <option value="Prop">Prop</option>
+                                            <option value="Set">Set</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="AA_assetGroupSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                     role="tablist">
+                                    <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                        role="tab" id="ui-id-130" aria-controls="ui-id-131" aria-selected="true"
+                                        aria-expanded="true" tabindex="0"><span
+                                            class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                            href="#">Asset Tag (<span id="AA_groupCount"></span>)</a></h3>
+                                    <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                         id="ui-id-131" aria-labelledby="ui-id-130" role="tabpanel" aria-hidden="false"
+                                         style="display: block;">
+                                        <select id="AA_assetGroupList" class="spk-leftSec">
+                                            <option value="ALL" title="ALL">ALL</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="AA_assComponentSec"
+                                     class="spk_accordion ui-accordion ui-widget ui-helper-reset" role="tablist">
+                                    <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                        role="tab" id="ui-id-132" aria-controls="ui-id-133" aria-selected="true"
+                                        aria-expanded="true" tabindex="0"><span
+                                            class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                            href="#">Component</a></h3>
+                                    <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                         id="ui-id-133" aria-labelledby="ui-id-132" role="tabpanel" aria-hidden="false"
+                                         style="display: block;">
+                                        <select id="AA_assetComponentList" class="spk-leftSec" multiple="true" size="8">
+                                            <option value="ALL" title="ALL">ALL</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="spk-checkbox spk-checkbox-right">
+                                    <input id="AA_TypeListMatchAllSelectedAssetComponentsChkBox" type="checkbox"
+                                           style="">
+                                    <label for="AA_TypeListMatchAllSelectedAssetComponentsChkBox"></label>
+                                </div>
+                                <strong>Match All</strong>
+                                <!--				<input id='AA_TypeListMatchAllSelectedAssetComponentsChkBox' type="checkbox" style=''><strong>Match All</strong></input>-->
+                            </div>
+
+                            <div id="ShotOption" style="display: block;">
+                                <div id="AA_shotComponentSec"
+                                     class="spk_accordion ui-accordion ui-widget ui-helper-reset" role="tablist">
+                                    <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                        role="tab" id="ui-id-134" aria-controls="ui-id-135" aria-selected="true"
+                                        aria-expanded="true" tabindex="0"><span
+                                            class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                            href="#">Shot Type</a></h3>
+                                    <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                         id="ui-id-135" aria-labelledby="ui-id-134" role="tabpanel" aria-hidden="false"
+                                         style="display: block;">
+                                        <select id="AA_shotComponentList" class="spk-leftSec" multiple="true" size="8">
+                                            <option value="ALL" title="ALL">ALL</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="spk-checkbox spk-checkbox-right">
+                                    <input id="AA_TypeListMatchAllSelectedShotComponentsChkBox" type="checkbox">
+                                    <label for="AA_TypeListMatchAllSelectedShotComponentsChkBox"></label>
+                                </div>
+                                <strong>Match All</strong>
+                                <!--				<input id='AA_TypeListMatchAllSelectedShotComponentsChkBox' type="checkbox" style=''><strong>Match All</strong></input>-->
+                                <div id="AA_ShotLevelSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                     role="tablist">
+                                    <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                        role="tab" id="ui-id-136" aria-controls="ui-id-137" aria-selected="true"
+                                        aria-expanded="true" tabindex="0"><span
+                                            class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                            href="#">Shot Hierarchy</a></h3>
+                                    <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                         id="ui-id-137" aria-labelledby="ui-id-136" role="tabpanel" aria-hidden="false"
+                                         style="display: block;">
+                                        <table style="width:100%">
+                                            <tbody>
+                                            <tr id="AA_ShotLevelSec1" class="spk-shotLevel" style="display: table-row;">
+                                                <td><strong id="AA_ShotLevelLabel1">Season</strong></td>
+                                                <td><select id="AA_ShotLevelList1" class="spk-shotLevelList"
+                                                            style="width:100%" size="1" data-level="1">
+                                                    <option value="ALL" title="ALL">ALL</option>
+                                                    <option value="1" title="1 - Season 1 (2009–2011)">1 - Season 1
+                                                        (2009–2011)
+                                                    </option>
+                                                    <option value="2" title="2 - Season 2 (2011–2013)">2 - Season 2
+                                                        (2011–2013)
+                                                    </option>
+                                                    <option value="3" title="3 - Season 3 (2014–2015)">3 - Season 3
+                                                        (2014–2015)
+                                                    </option>
+                                                    <option value="4" title="4 - Season 4 (2015–2017)">4 - Season 4
+                                                        (2015–2017)
+                                                    </option>
+                                                    <option value="5" title="5 - Season 5 (2018-2019)">5 - Season 5
+                                                        (2018-2019)
+                                                    </option>
+                                                    <option value="999" title="999">999</option>
+                                                </select></td>
+                                            </tr>
+                                            <tr id="AA_ShotLevelSec2" class="spk-shotLevel" style="display: table-row;">
+                                                <td><strong id="AA_ShotLevelLabel2">Episode</strong></td>
+                                                <td><select id="AA_ShotLevelList2" class="spk-shotLevelList"
+                                                            style="width:100%" multiple="" size="8" data-level="2">
+                                                    <option value="ALL" title="ALL">ALL</option>
+                                                    <option value="00" title="00 - Intro">00 - Intro</option>
+                                                    <option value="01" title="01 - Solar Train">01 - Solar Train
+                                                    </option>
+                                                    <option value="02" title="02 - Bird Watching">02 - Bird Watching
+                                                    </option>
+                                                    <option value="03" title="03 - Rocket Train Surprise Party">03 -
+                                                        Rocket Train Surprise Party
+                                                    </option>
+                                                    <option value="04" title="04 - Caving With Vlad">04 - Caving With
+                                                        Vlad
+                                                    </option>
+                                                    <option value="05" title="05 - Tinys Fishing Friend">05 - Tinys
+                                                        Fishing Friend
+                                                    </option>
+                                                    <option value="06" title="06 - Butterflies">06 - Butterflies
+                                                    </option>
+                                                    <option value="07" title="07 - Camp Rafting">07 - Camp Rafting
+                                                    </option>
+                                                    <option value="08" title="08 - Plant a Tree">08 - Plant a Tree
+                                                    </option>
+                                                    <option value="09" title="09 - Mountain Climbing">09 - Mountain
+                                                        Climbing
+                                                    </option>
+                                                    <option value="10" title="10 - Best-Ever Babysitter">10 - Best-Ever
+                                                        Babysitter
+                                                    </option>
+                                                    <option value="11" title="11 - Ziplining">11 - Ziplining</option>
+                                                    <option value="12" title="12 - Cloudy with a Chance of fun">12 -
+                                                        Cloudy with a Chance of fun
+                                                    </option>
+                                                    <option value="13" title="13 - Canyon Hiking">13 - Canyon Hiking
+                                                    </option>
+                                                    <option value="14" title="14 - One Big Frog">14 - One Big Frog
+                                                    </option>
+                                                    <option value="15" title="15 - Turtle and Theropod Race ">15 -
+                                                        Turtle and Theropod Race
+                                                    </option>
+                                                    <option value="16" title="16 - Hungry Hungry Carnivores">16 - Hungry
+                                                        Hungry Carnivores
+                                                    </option>
+                                                    <option value="17" title="17 - Air Obstacle Race">17 - Air Obstacle
+                                                        Race
+                                                    </option>
+                                                    <option value="18" title="18 - King and Crystal Live">18 - King and
+                                                        Crystal Live
+                                                    </option>
+                                                    <option value="19" title="19 - Air Water Land">19 - Air Water Land
+                                                    </option>
+                                                    <option value="20" title="20 - Desert Day and Night">20 - Desert Day
+                                                        and Night
+                                                    </option>
+                                                    <option value="21" title="21 - Ultimate Faceoff">21 - Ultimate
+                                                        Faceoff
+                                                    </option>
+                                                    <option value="22" title="22 - Back in Time">22 - Back in Time
+                                                    </option>
+                                                    <option value="23" title="23 - waterfalls">23 - waterfalls</option>
+                                                    <option value="24" title="24 - Atoll">24 - Atoll</option>
+                                                    <option value="25" title="25 - Pangaea">25 - Pangaea</option>
+                                                    <option value="26" title="26 - Crater">26 - Crater</option>
+                                                    <option value="88M" title="88M">88M</option>
+                                                </select></td>
+                                            </tr>
+                                            <tr id="AA_ShotLevelSec3" class="spk-shotLevel" style="display: none;">
+                                                <td><strong id="AA_ShotLevelLabel3">Scene</strong></td>
+                                                <td><select id="AA_ShotLevelList3" class="spk-shotLevelList"
+                                                            style="width:100%" multiple="true" size="8"
+                                                            data-level="3"></select></td>
+                                            </tr>
+                                            <tr id="AA_ShotLevelSec4" class="spk-shotLevel" style="display: none;">
+                                                <td><strong id="AA_ShotLevelLabel4"></strong></td>
+                                                <td><select id="AA_ShotLevelList4" class="spk-shotLevelList"
+                                                            style="width:100%" multiple="true" size="8"
+                                                            data-level="4"></select></td>
+                                            </tr>
+                                            <tr id="AA_ShotLevelSec5" class="spk-shotLevel" style="display: none;">
+                                                <td><strong id="AA_ShotLevelLabel5"></strong></td>
+                                                <td><select id="AA_ShotLevelList5" class="spk-shotLevelList"
+                                                            style="width:100%" multiple="true" size="8"
+                                                            data-level="5"></select></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="spk-divider"></div>
+                                        <!--                                        <button id="AA_createShotBtn"-->
+                                        <!--                                                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"-->
+                                        <!--                                                role="button" style="width: 100%;"><span-->
+                                        <!--                                                class="ui-button-icon-primary ui-icon ui-icon-document"></span><span-->
+                                        <!--                                                class="ui-button-text">Create Shots</span></button>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="AA_searchSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                    role="tab" id="ui-id-138" aria-controls="ui-id-139" aria-selected="true"
+                                    aria-expanded="true" tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">Search</a></h3>
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-139" aria-labelledby="ui-id-138" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <div style="padding-right:2em;">
+                                        <input id="AA_searchFld" class="spk-leftSec" style="width:98%;float:left;">
+                                    </div>
+                                    <button id="AA_clearSearchBtn"
+                                            style="float:right;width:20px;height:20px;margin-top:0.2em"
+                                            class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                                            role="button" title=""><span
+                                            class="ui-button-icon-primary ui-icon ui-icon-close"></span><span
+                                            class="ui-button-text"> </span></button>
+                                    <div style="display: inline-block;">
+                                        <div class="spk-checkbox spk-checkbox-right">
+                                            <input id="AA_exactMatchChkBox" type="checkbox">
+                                            <label for="AA_exactMatchChkBox" title="Match whole word only"></label>
+                                        </div>
+                                        <strong>whole word match</strong>
+                                    </div>
+                                    <div>
+                                        <div class="spk-checkbox spk-checkbox-right">
+                                            <input id="AA_shotMatchChkBox" type="checkbox">
+                                            <label for="AA_shotMatchChkBox" title="Shot level match"></label>
+                                        </div>
+                                        <strong>shot level match</strong>
+                                    </div>
+                                    <!--					<input id='AA_exactMatchChkBox' type="checkbox" style='' title='Match whole word only'>whole word match</input>-->
+                                </div>
+                            </div>
+
+                            <div id="AA_studioSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                    role="tab" id="ui-id-140" aria-controls="ui-id-141" aria-selected="true"
+                                    aria-expanded="true" tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">Studio (<span id="AA_studioCount">3</span>)</a></h3>
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-141" aria-labelledby="ui-id-140" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <select id="AA_studioList" class="spk-leftSec">
+                                        <option value="ALL" title="ALL">ALL</option>
+                                        <option value="1" title="SINGAPORE">SINGAPORE</option>
+                                        <option value="2" title="SUBANG JAYA">SUBANG JAYA</option>
+                                        <option value="3" title="CHENNAI">CHENNAI</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="AA_userTeamSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                    role="tab" id="ui-id-142" aria-controls="ui-id-143" aria-selected="true"
+                                    aria-expanded="true" tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">User Team (<span id="AA_teamCount">30</span>)</a></h3>
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-143" aria-labelledby="ui-id-142" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <select id="AA_userTeamList" class="spk-leftSec">
+                                        <option value="ALL">ALL</option>
+                                        <option value="Animation">Animation</option>
+                                        <option value="animRating">animRating</option>
+                                        <option value="Asset">Asset</option>
+                                        <option value="Blocking">Blocking</option>
+                                        <option value="Coordinator">Coordinator</option>
+                                        <option value="Designers">Designers</option>
+                                        <option value="Developers">Developers</option>
+                                        <option value="Digital Games">Digital Games</option>
+                                        <option value="Editing">Editing</option>
+                                        <option value="Effects">Effects</option>
+                                        <option value="Generalist">Generalist</option>
+                                        <option value="HR and Accounts">HR and Accounts</option>
+                                        <option value="katrin">katrin</option>
+                                        <option value="Lighting">Lighting</option>
+                                        <option value="Modelling">Modelling</option>
+                                        <option value="OfficeAdmin">OfficeAdmin</option>
+                                        <option value="Preproduction">Preproduction</option>
+                                        <option value="Production Management">Production Management</option>
+                                        <option value="Rigging">Rigging</option>
+                                        <option value="RRAdmin">RRAdmin</option>
+                                        <option value="Sandra">Sandra</option>
+                                        <option value="Savva Simulation">Savva Simulation</option>
+                                        <option value="spkview3">spkview3</option>
+                                        <option value="SPKViewC1">SPKViewC1</option>
+                                        <option value="SPKViewC2">SPKViewC2</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Supervisor">Supervisor</option>
+                                        <option value="Surfacing">Surfacing</option>
+                                        <option value="Technical">Technical</option>
+                                        <option value="Z_BBFTool_Access">Z_BBFTool_Access</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="AA_userListSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                    role="tab" id="ui-id-144" aria-controls="ui-id-145" aria-selected="true"
+                                    aria-expanded="true" tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">User List (<span id="AA_userCount">641</span>)</a></h3>
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-145" aria-labelledby="ui-id-144" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <select id="AA_userList" class="spk-leftSec">
+                                        <option value="ALL" title="ALL">ALL</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="AA_dateFilterSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                    role="tab" id="ui-id-146" aria-controls="ui-id-147" aria-selected="true"
+                                    aria-expanded="true" tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">Date Filter</a></h3>
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-147" aria-labelledby="ui-id-146" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <select id="AA_dateModeList" class="spk-leftSec">
+                                        <option value="0">None</option>
+                                        ';
+                                        <option value="1">Today</option>
+                                        ';
+                                        <option value="2">Yesterday, Today &amp; Tomorrow</option>
+                                        ';
+                                        <option value="3">Current Week</option>
+                                        ';
+                                        <option value="4">Last, Current &amp; Next Week</option>
+                                        ';
+                                        <option value="5">Current Month</option>
+                                        ';
+                                        <option value="6">Last, Current &amp; Next Month</option>
+                                        ';
+                                        <option value="7">Current Year</option>
+                                        ';
+                                        <option value="8">Custom Range</option>
+                                        ';
+                                    </select>
+
+                                    <div class="spk-divider"></div>
+
+                                    <select id="AA_dateList" class="spk-leftSec">
+                                        <option value="ALL">ALL</option>
+                                        <option value="DueDate">Due Date</option>
+                                        <option value="UpdateDate">Update On</option>
+                                    </select>
+
+                                    <div class="spk-divider"></div>
+
+                                    <div id="AA_dateRangeSec" style="display: none;">
+                                        <div style="padding-right:2.2em;">
+                                            <strong class="spk-leftSec">From</strong>
+                                            <input id="AA_fromDateFld" class="spk-date hasDatepicker"
+                                                   style="float:left;width:98%">
+                                        </div>
+                                        <button id="AA_clearFromDateBtn" style="float:right;width:20px;height:20px;"
+                                                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                                                role="button" title=""><span
+                                                class="ui-button-icon-primary ui-icon ui-icon-close"></span><span
+                                                class="ui-button-text"> </span></button>
+
+                                        <div style="padding-right:2.2em;">
+                                            <strong class="spk-leftSec">To</strong>
+                                            <input id="AA_toDateFld" class="spk-date hasDatepicker"
+                                                   style="float:left;width:98%">
+                                        </div>
+                                        <button id="AA_clearToDateBtn" style="float:right;width:20px;height:20px;"
+                                                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                                                role="button" title=""><span
+                                                class="ui-button-icon-primary ui-icon ui-icon-close"></span><span
+                                                class="ui-button-text"> </span></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="AA_recordsPerPageSec" class="spk_accordion ui-accordion ui-widget ui-helper-reset"
+                                 role="tablist">
+                                <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons"
+                                    role="tab" id="ui-id-148" aria-controls="ui-id-149" aria-selected="true"
+                                    aria-expanded="true" tabindex="0"><span
+                                        class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span><a
+                                        href="#">Records Per Page</a></h3>
+                                <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"
+                                     id="ui-id-149" aria-labelledby="ui-id-148" role="tabpanel" aria-hidden="false"
+                                     style="display: block;">
+                                    <select id="AA_recordsPerPageList" class="spk-leftSec">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                        <option value="250">250</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                        <option value="ALL">ALL (Slow)</option>
+                                    </select>
+
+                                    <strong id="AA_assRecordCount" style="font-size:0.8em">Record Count: 933</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id=""
+                         class="ui-layout-resizer ui-layout-resizer-west ui-draggable-handle ui-layout-resizer-open ui-layout-resizer-west-open"
+                         title="Resize"
+                         style="position: absolute; padding: 0px; margin: 0px; font-size: 1px; text-align: left; overflow: hidden; z-index: 2; background: rgb(206, 234, 130); border: none; cursor: w-resize; left: 200px; height: 331px; width: 6px; top: 0px;">
+                        <div id=""
+                             class="ui-layout-toggler ui-layout-toggler-west ui-layout-toggler-open ui-layout-toggler-west-open"
+                             title="Close"
+                             style="position: absolute; display: block; padding: 0px; margin: 0px; overflow: hidden; text-align: center; font-size: 1px; cursor: pointer; z-index: 1; background: rgb(235, 193, 131); visibility: visible; height: 50px; width: 6px; top: 140px; left: 0px;"></div>
+                    </div>
+                </div>
+
+                <div>
+
+
+                    <!--AA_setAutoTriggerBtn-->
+
+
+                    <b>
+
+
+                        <b>
+
+                            <b><b>
+
+
+                                <!--<div id='AS_VideoFileUploadDialog' title='Image Submission'  class='ui-widget spk-dialog'>
+		<div class='spk-pane'>
+			<div id='VideoFileUploadOptionSec'>
+				<div>
+					<strong>Keep Original File Name : </strong><input type='checkbox' id='AA_VideoFU_KeepFileName' style='font-size:1em;' checked='checked'></input>
+				</div>
+				<div>
+				<strong>Submission Remarks : </strong><input id='AS_VideoFileUploadRemarkFld' type='text' style='width:70%'></input>
+				</div>
+			</div>
+			<div class='spk-divider'></div>
+			<div id='VideoFileUploadSec' class='spk-fileUpload'></div>
+		</div>
+	</div>-->
+
+
+                            </b></b></b></b></div>
+                <b><b>
+
+                    <!--</tbody></table>-->
+
+
+                    <b>
+
+                    	<script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/jquery.layout-1.3.0.rc30.79.js' %}"></script>
+    <script src="{% static 'js/jquery-ui-timepicker-addon.js' %}"></script>
+    <script src="{% static 'js/jQuery.print.js' %}"></script>
+    <!--    <script src="{% static 'js/highcharts.js' %}"></script>-->
+    <script src="{% static 'js/jquery.fineuploader-3.0.js' %}"></script>
+    <script src="{% static 'js/SPKNET.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/login.js' %}"></script>
+    <script src="{% static 'js/common.2.1.js' %}"></script>
+    <script src="{% static 'js/modal.js' %}"></script>
+    <script src="{% static 'js/maya.js' %}"></script>
+    <script src="{% static 'js/tooltips.js' %}"></script>
+    <script src="{% static 'js/assignManager.js' %}"></script>
+    <script src="{% static 'js/loaders.js' %}"></script>
+    <script src="{% static 'js/html5player.1.0.js' %}"></script>
+    <script src="{% static 'js/jscolor.js' %}"></script>
+    <script src="{% static 'js/status.js' %}"></script>
+    <script src="{% static 'js/shot.2.1.js' %}"></script>
+    <script src="{% static 'js/project.2.2.js' %}"></script>
+    <script src="{% static 'js/assignment.2.3.js' %}"></script>
+    <script src="{% static 'js/asset.2.5.js' %}"></script>
+    <script src="{% static 'js/user.2.1.js' %}"></script>
+    <script src="{% static 'js/main.1.1.js' %}"></script>
+    <script src="{% static 'js/sparky.1.05.js' %}"></script>
+
+
+
+                        <script type="text/javascript">
+	$(document).ready(function() {
+		ass_initAssignment();
+<!--		console.log("test...")-->
+		document.cookie = "SPK_CurUserKey={{request.session.userkey}}";
+		setSPKCookie('SPK_CurUserKey', '994')
+<!--        console.log("test...",getSPKCookie('SPK_CurUserKey'))-->
+//		$("[title]").tooltips();
+	});
+
+
+
+
+
+                        </script>
+
+
+                    </b></b></b></div>
+        </div>
+    </div>
+</div>
+
+<div id='NewProjectDialog' title='Create New Project' class='ui-widget'>
+    <table style='width:100%'>
+        <tr>
+            <td style='width:100px'><strong>Project Prefix : </strong></td>
+            <td><input id='projPrefFld' type='text' style='width:100%'/></td>
+        </tr>
+        <tr>
+            <td style='width:100px'><strong>Project Name : </strong></td>
+            <td><input id='projNameFld' type='text' style='width:100%'/></td>
+        </tr>
+    </table>
+</div>
+
+<div class="login-user-modal">
+    <div class="login-user-modal-container">
+        <div class="login-header">
+            <a href="/"><img src="\public\images\SPKLogo_login_spknet.jpg" style="display:block; margin:auto; position: relative;
+                                                width: 200px; padding: 15px 0px;"></a>
+        </div>
+        <div id="login-login">
+            <form class="login-form">
+                <p class="fieldset">
+                    <label class="image-replace" for="userName"><i class="fa fa-user"></i></label>
+                    <input class="full-width has-padding has-border" id="userName" type="text" placeholder="Username">
+                </p>
+                <p class="fieldset">
+                    <label class="image-replace" for="userPassword"><i class="fa fa-key"></i></label>
+                    <input class="full-width has-padding has-border" id="userPassword" type="password"
+                           placeholder="Password">
+                    <a href="#0" class="hide-password"><i class="fa fa-eye"></i></a>
+                </p>
+                <div class="login-feedback">
+                    <span class="login-error-message"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    <!--
+                    <span class="login-warn-message"><i class="fa fa-times" aria-hidden="true"></i>Warning message here!</span> -->
+                </div>
+                <p class="fieldset">
+                    <input id="loginSubmitBtn" class="full-width" type="submit" value="Login">
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div id='SPK_CookieSec' style='display:none;'></div>
+</body>
+
+<script type='text/javascript'>
+    setSPKCookie('SPK_CurUserKey', '994')
+	var	SPK_DEVMODE	= GetCookie('SPK_DEVMODE');
+	$(document).ready(function() {
+        setSPKCookie('SPK_CurUserKey', '994')
+
+		SPK_COOKIESEC	= 'SPK_CookieSec'
+
+		var	curPort	= GetCookie('SPK_MayaPort')
+		if (curPort != '')
+			SPK_MayaPort	= curPort
+
+		var	curMaya	= GetCookie('SPK_MayaVersion')
+		if (curMaya != '')
+			SPK_Maya	= curMaya
+
+		var	stat	= new Object()
+		stat.Status	= new Array()
+		stat.Status[0]	= 'Maya Port Open: ' + SPK_MayaPort
+
+		$("#MessageSecClear").on("click", function(){
+			$("#MessageSecBody").empty()
+		});
+
+			setSPKCookie('SPK_CurUserGroupKey', '5')
+
+			initializeMain(1);
+			Maya.RefreshTag();
+			})
+
+
+
+
+
+
+</script>
+
+</html>
