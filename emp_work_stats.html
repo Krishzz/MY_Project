@@ -1,0 +1,184 @@
+{% load static %}
+
+<!--
+Created By:  "Madhan Krishna P"
+Designation: "Junior Python Developer"
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Emp_work_status</title>
+	<link rel="shortcut icon" href="{% static 'images/spklogo_login_spknet_Ogv_icon.ico' type='image/x-icon' %}">
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+</head>
+<style type="text/css">
+	table{
+      border: 2px solid #000;
+       background-color: rgb(206, 234, 130);
+       width: 55%
+    }
+
+    td{
+    	font-size: 20px;
+      text-align: left;
+      
+    }
+    .cal{
+    	width: 5%
+    }
+    .cap{
+    	width: 30%
+    }
+
+    #bord{font-size: 24px;
+    	width: 40%;
+    }
+
+    table {
+  border-collapse: collapse;
+}
+td {
+	height: 24px;
+  padding: 5px 10px;
+}
+
+.ScrollStyle
+{
+    max-height: 100px;
+    overflow-y: scroll;
+}
+
+.infotable tr td{
+    border-collapse: collapse;
+    border: 0;
+}
+
+</style>
+<body style="background-color: rgb(206, 234, 130)">
+		<center>
+		<table>
+			<thead>
+			<tr>
+				<th style="font-size: 30px;" colspan="3"><img style="float: left;" src="{% static 'images/spklogo.png' %}" height="80" width="190"><br>Employee Work Status
+				</th>
+			</tr>
+		</thead>
+	</table>
+		<tr>
+			<th colspan="3"><pre></pre></th>
+		</tr>
+		<table>
+			<thead>
+			<tr id="bord">
+				<th colspan="2" id="bord" style="width: 50%">EmployeeName:<label id="empname" style="width: 50%; height: 100%; float: right;" name="{{fullname}}_{{userkey}}">{{fullname}}</label></th>
+			</tr>
+			</thead>
+		</table>
+		<br>
+		<table>
+			<tbody>
+				<tr>
+					<td style="width: 25%">Status</td>
+					<td><select name="status" id="status" style="margin-left: 12px;" required="required">
+						{% if sts1 == "Online" %}
+						<option value="{{sts1}}" selected disabled hidden>{{sts2}}</option>
+						{% else %}
+						<option value="{{sts}}" selected disabled hidden>{{sts}}</option>
+						{% endif %}
+						<option value="Online">Logged In for the Day</option>
+						<option value="On a Break">On a Break</option>
+						<option value="Resumed Work">Resumed Work</option>
+						<option value="Offline">Logged Out for the Day</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 25%">Status Message</td>
+					<td><textarea type="text" name="stsmsg" id="stsmsg" onfocus="this.select()" style=" height: 100%; width: 97%;float: right" rows="4" cols="50" required>{{Stsmsg}}</textarea></td>
+			</tr>
+			<br>
+		</tbody>
+	</table>
+	<br>
+	<center><input type="Submit" name="Submit" id="submit"></center>
+	<br>
+	<center><strong>Note:</strong>
+		<br>
+		1.Please Logout at the end of the day
+		<br>
+	2. Please Use Resumed work option when you resume work after a break
+	<br>
+3.Please feel free to update the status message only when changing the Status option</center>
+	<br>
+
+	<div class="ScrollStyle">
+    	<table class="infotable" style="background-color: #32CD32; width: 80%;">
+    		<tr id="info"></tr>
+    	</table>
+    </div>
+				
+<script>
+	window.stss='{{sts|safe}}'
+	$("#status").change(function(){
+		//console.log($("#status").val())
+		var sts=$("#status").val()
+		if(sts=="Online"){
+			$("#stsmsg").val("Logged In")
+		}
+		if(sts=="Offline"){
+			$("#stsmsg").val("Logged Out")
+		}
+
+		if(sts=="Resumed Work"){
+			$("#stsmsg").val("Resumed Work")
+		}
+
+		if(sts=="On a Break"){
+			$("#stsmsg").val("On a Break")
+		}
+	})
+	$("#submit").click(function(){
+		var Ukn=$("#empname").attr("name")
+		var fields = Ukn.split('_');
+		var Un = fields[0];
+		var Uk = fields[1];
+		var sts=$("#status").val()
+		var stsmsg=$("#stsmsg").val()
+		//console.log(Un,Uk,sts,stsmsg)
+		if(window.stss!==sts){
+			$.ajax({
+		        url: '/status_update/',
+		        type: "POST",
+		        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+		        data: {
+		            'Userkey':Uk,
+		            'Username':Un,
+		            'Status':sts,
+		            'ststmsg':stsmsg,
+		        },
+		        dataType: 'json',
+		        success: function(data){
+                  if(data){
+                  	if(data["mydata"]=="redirect"){
+                  		window.location.replace("http://30.0.16.17:8000/");
+                  	}
+                  	else{
+                  		//$("#info").prepend('<tr><td style = "font-size: 15px; width: 60% ">'+data["mydata"]+'</td></tr>' )
+                  		//console.log(data["mydata"])
+                  		location.reload(true)
+                  	}
+                  }
+              }
+		    })
+		}
+		else{
+			//console.log("Please update the fields")
+			//$("#info").prepend('<tr><td style = "font-size: 15px; width: 60% ">Please update the fields</td></tr>')
+		}
+	})
+
+
+</script>
+</body>
+</html>
